@@ -1,13 +1,24 @@
 // () => {} é uma arrow function
 const { select, input, checkbox } = require('@inquirer/prompts')
+const fs = require ("fs").promises
 
 let mensagem = "Bem vindo ao app de Metas";
 
-let meta = {
-    value: 'Tomar 3L de água por dia',
-    checked: false,
+let metas 
+
+const carregarMetas = async () => {
+    try {
+        const dados = await fs.readFile("metas.json", "utf-8")
+        metas = JSON.parse(dados)
+    }
+    catch (erro) {
+        metas = []
+    }
 }
-let metas = [ meta ]
+
+const salvarMetas = async () => {
+    await fs.writeFile("metas.json", JSON.stringify(metas, null, 2))
+}
 
 // função de cadastrar metas
 const cadastrarMeta = async () => {
@@ -126,8 +137,10 @@ const mostrarMensagem = () => {
 }
 // função que inicia o menu de aplicação
 const start = async () => { //async para fazer o await funcionar
+    await carregarMetas ()
     while (true) {
         mostrarMensagem()
+        await salvarMetas
 
         const opcao = await select ({
             message: "Menu >",
@@ -163,9 +176,11 @@ const start = async () => { //async para fazer o await funcionar
         switch (opcao) {
             case "Cadastrar":
                 await cadastrarMeta()
+                await salvarMetas()
                 break
             case "Listar":
                 await listarMetas()
+                await salvarMetas()
                 break
             case "Realizadas":
                 await metasRealizadas()

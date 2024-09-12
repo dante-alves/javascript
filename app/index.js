@@ -1,6 +1,26 @@
-const { select } = require('@inquirer/prompts')
-
 // () => {} é uma arrow function
+const { select, input } = require('@inquirer/prompts')
+
+let meta = {
+    value: 'Tomar 3L de água por dia',
+    checked: false,
+}
+let metas = [ meta ]
+
+// função de cadastrar metas
+const cadastrarMeta = async () => {
+    const meta = await input ({message: "Digite a meta:"})
+
+    if (meta.length == 0) {
+        console.log ("A meta não pode ser vazia.")
+        return
+    }
+    
+    metas.push (
+        { value: meta, checked: false }
+    )
+}
+// função que inicia o menu de aplicação
 const start = async () => { //async para fazer o await funcionar
     while (true) {
         const opcao = await select ({
@@ -24,7 +44,8 @@ const start = async () => { //async para fazer o await funcionar
             
         switch (opcao) {
             case "Cadastrar":
-                console.log ("Vamos cadastrar!")
+                await cadastrarMeta()
+                console.log (metas)
                 break
             case "Listar":
                 console.log ("Vamos listar!")

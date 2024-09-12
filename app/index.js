@@ -1,11 +1,16 @@
 // () => {} é uma arrow function
 const start = () => {
-    let count = 0
-    while (count < 10) {
-        console.log(count)
-        count ++
+    let opcao = "Cadastrar"
+    switch (opcao) {
+        case "Cadastrar":
+            console.log ("Vamos cadastrar!")
+            break
+        case "Listar":
+            console.log ("Vamos listar!")
+            break
+        case "Sair":
+            return
     }
 }
 
-start() 
-console.log ('Olá mundo')
+start ()

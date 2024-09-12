@@ -31,7 +31,7 @@ const listarMetas = async () => {
     
     metas.forEach((m) => {
         m.checked = false
-        
+
     if (respostas.length == 0) {
         console.log ("Nenhuma meta selecionada!")
         return
@@ -61,8 +61,25 @@ const metasRealizadas = async () => {
     }
 
     await select ({
-        message: "Metas Realizadas",
+        message: `Metas Realizadas: ${realizadas.length}`,
         choices: [...realizadas]
+    })
+}
+
+// função de metas em aberto
+const metasAbertas = async () => {
+    const abertas = metas.filter((meta) => {
+        return !meta.checked
+    })
+
+    if (abertas.length == 0) {
+        console.log('Não existem metas em aberto, parabéns!')
+        return
+    }
+
+    await select ({
+        message: `Metas em aberto: ${abertas.length}`,
+        choices: [...abertas]
     })
 }
 // função que inicia o menu de aplicação
@@ -84,6 +101,10 @@ const start = async () => { //async para fazer o await funcionar
                     value: "Realizadas"
                 },
                 {
+                    name: "Metas em Aberto",
+                    value: "Abertas"
+                },
+                {
                     name: "Sair",
                     value: "Sair"
                 }
@@ -102,6 +123,9 @@ const start = async () => { //async para fazer o await funcionar
                 break
             case "Realizadas":
                 await metasRealizadas()
+                break
+            case "Abertas":
+                await metasAbertas()
                 break
             case "Sair":
                 console.log ("Até a próxima!")
